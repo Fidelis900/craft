@@ -194,4 +194,15 @@ describe('webhookDLQ.capture()', () => {
         const entry = webhookDLQ.capture('github', 'push', '{}', 'err', 1, 'https://ep.example.com');
         expect(webhookDLQ.get(entry.id)?.endpointUrl).toBe('https://ep.example.com');
     });
+
+    it('generates unique collision-resistant IDs across a large batch of rapidly-generated entries', () => {
+        const count = 1000;
+        const ids = new Set<string>();
+        for (let i = 0; i < count; i++) {
+            const entry = webhookDLQ.capture('stripe', `event.${i}`, `{"payload":${i}}`, 'err', 0);
+            expect(entry.id).toMatch(/^dlq_\d+_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
+            ids.add(entry.id);
+        }
+        expect(ids.size).toBe(count);
+    });
 });

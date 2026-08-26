@@ -16,6 +16,7 @@
  * to that endpoint are paused for 1 hour.
  */
 
+import { randomUUID } from 'crypto';
 import { calculateBackoffDelay, sleep } from '../retry/exponential-backoff';
 
 export type WebhookSource = 'stripe' | 'github';
@@ -69,7 +70,7 @@ let _stripeProcessor: ProcessorFn | null = null;
 let _githubProcessor: ProcessorFn | null = null;
 
 function generateId(): string {
-    return `dlq_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+    return `dlq_${Date.now()}_${randomUUID()}`;
 }
 
 /**
