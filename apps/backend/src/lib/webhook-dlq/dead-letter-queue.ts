@@ -211,6 +211,8 @@ export const webhookDLQ = {
             entry.reprocessedAt = new Date();
             entry.reprocessStatus = 'succeeded';
             store.set(id, entry);
+            const dedupKey = deriveDedupKey(entry.source, entry.eventType, entry.payload);
+            dedupIndex.delete(dedupKey);
             return { success: true };
         } catch (err: any) {
             entry.reprocessedAt = new Date();
@@ -287,6 +289,8 @@ export const webhookDLQ = {
                 afterSleep.reprocessStatus = 'succeeded';
                 afterSleep.attempts += 1;
                 store.set(id, afterSleep);
+                const dedupKey = deriveDedupKey(afterSleep.source, afterSleep.eventType, afterSleep.payload);
+                dedupIndex.delete(dedupKey);
                 if (endpoint !== null) recordSuccess(endpoint);
                 console.log('[DLQ] Retry audit', {
                     id,
@@ -333,6 +337,11 @@ export const webhookDLQ = {
 
     size(): number {
         return store.size;
+    },
+
+    /** Exposed for testing only. */
+    _dedupIndexSize(): number {
+        return dedupIndex.size;
     },
 
     /** Exposed for testing only. */
