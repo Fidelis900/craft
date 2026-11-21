@@ -57,6 +57,14 @@ GITHUB_APP_INSTALLATION_ID=12345678
 GITHUB_API_BASE_URL=https://api.github.com
 STRIPE_SECRET_KEY=your_stripe_key
 STRIPE_WEBHOOK_SECRET=your_webhook_secret
+# Artifact signing
+# ARTIFACT_SIGNING_SECRET is the current secret used to sign deployment artifacts.
+# ARTIFACT_SIGNING_SECRET_PREVIOUS is the previous secret retained only during rotation.
+ARTIFACT_SIGNING_SECRET=your_artifact_signing_secret
+ARTIFACT_SIGNING_SECRET_PREVIOUS=your_previous_artifact_signing_secret
+# DEPLOYMENT_ARTIFACT_BUCKET is the storage bucket for signed artifacts.
+# Defaults to 'craft-deployment-artifacts' if not overridden.
+DEPLOYMENT_ARTIFACT_BUCKET=craft-deployment-artifacts
 ```
 
 ---
