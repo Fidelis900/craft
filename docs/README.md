@@ -59,6 +59,15 @@ STRIPE_SECRET_KEY=your_stripe_key
 STRIPE_WEBHOOK_SECRET=your_webhook_secret
 ```
 
+# Compliance
+# JSON configuration for asset compliance checks.
+# Provide a blocklist of issuer accounts and jurisdiction rules.
+# When unset, compliance checks are disabled (no warnings).
+COMPLIANCE_BLOCKLIST_JSON='[{"issuer":"GAAAAAAA...","reason":"Example blocked issuer"}]'
+COMPLIANCE_JURISDICTION_JSON='[{"jurisdiction":"US","blockedAssets":["TOKEN"]}]'
+# See docs/asset-validation-rules.md for details.
+
+
 ---
 
 ## Project Structure
